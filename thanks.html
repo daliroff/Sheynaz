@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rahmat — Sheynaz Travel</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .thanks-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 60px);
+      padding: 2rem 1rem;
+    }
+    .thanks-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.13);
+      padding: 3rem 2.5rem;
+      max-width: 560px;
+      width: 100%;
+      text-align: center;
+    }
+    .thanks-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+    }
+    .thanks-card h2 {
+      color: #2d1b69;
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+    .thanks-msgs {
+      margin-bottom: 2rem;
+    }
+    .thanks-msgs p {
+      color: #276749;
+      background: #c6f6d5;
+      border: 1.5px solid #38a169;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.6rem;
+      font-size: 0.95rem;
+    }
+    .back-btn {
+      display: inline-block;
+      padding: 0.75rem 2rem;
+      background: #5b21b6;
+      color: #fff;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: background 0.2s;
+    }
+    .back-btn:hover { background: #4c1d95; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Sheynaz <span>Travel</span></div>
+  <div class="nav-right">
+    <div class="lang-switcher">
+      <button data-lang="uz">UZ</button>
+      <button data-lang="ru">RU</button>
+      <button data-lang="en">EN</button>
+    </div>
+  </div>
+</nav>
+
+<div class="thanks-wrap">
+  <div class="thanks-card">
+    <div class="thanks-icon">✅</div>
+    <h2>Sheynaz <span style="color:#f59e0b">Travel</span></h2>
+    <div class="thanks-msgs">
+      <p>🇺🇿 Rahmat! Arizangiz qabul qilindi. Tez orada siz bilan bog'lanamiz!</p>
+      <p>🇷🇺 Спасибо! Ваша заявка принята. Мы скоро с вами свяжемся!</p>
+      <p>🇬🇧 Thank you! We received your request. We will contact you shortly!</p>
+    </div>
+    <a href="index.html" class="back-btn">← Bosh sahifa</a>
+  </div>
+</div>
+
+<script src="i18n.js"></script>
+<script>
+  // Apply lang switcher on thanks page
+  function applyTranslations() {
+    const lang = getLang();
+    document.querySelectorAll('.lang-switcher button').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+  }
+  document.querySelectorAll('.lang-switcher button').forEach(btn => {
+    btn.addEventListener('click', () => setLang(btn.dataset.lang));
+  });
+  document.addEventListener('langchange', applyTranslations);
+  applyTranslations();
+</script>
+</body>
+</html>
