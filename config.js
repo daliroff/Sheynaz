@@ -13,7 +13,7 @@ const CONFIG = {
   // 2) JSONBIN.IO — arizalar saqlanadigan bepul baza
   //    jsonbin.io > Register > API Keys > Create Access Key (Master Key)
   //    Keyin: Bins > Create New Bin > body: {"requests":[]} > Save > ID ni nusxalang
-  JSONBIN_KEY:    'PASTE_JSONBIN_MASTER_KEY_HERE',
+  JSONBIN_KEY:    '$2a$10$eoAkV.oNDilFSzZoBo1eGOi7IvhOSaFci3PABKfrtG9e.UGFLDtvK',
   JSONBIN_BIN_ID: 'PASTE_JSONBIN_BIN_ID_HERE',
 
 };
