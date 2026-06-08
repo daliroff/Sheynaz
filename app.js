@@ -1,13 +1,37 @@
-// ── Seed data (used when localStorage is empty) ───────────────────────────────
+// ── Telegram Bot config ───────────────────────────────────────────────────────
+// SETUP: Paste your bot token and chat ID here (see README or instructions)
+const TG_BOT_TOKEN = 'PASTE_BOT_TOKEN_HERE';
+const TG_CHAT_ID   = 'PASTE_CHAT_ID_HERE';
 
+async function sendToTelegram(data) {
+  const msg =
+    `🛫 *Yangi ariza — Sheynaz Travel*\n` +
+    `👤 Ism: ${data.name}\n` +
+    `📞 Telefon: ${data.phone}\n` +
+    `🌍 Yo'nalish: ${data.dest}\n` +
+    `📅 Sana: ${data.date}`;
+
+  const url = `https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: TG_CHAT_ID, text: msg, parse_mode: 'Markdown' })
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.description || 'Telegram error');
+  }
+}
+
+// ── Seed data ─────────────────────────────────────────────────────────────────
 const SEED_DESTINATIONS = [
-  {"id":1,"country_name":"Turkiya (Istanbul)","price_usd":299,"price_uzs":3800000,"notes":"Viza kerak emas"},
-  {"id":2,"country_name":"BAA (Dubai)","price_usd":399,"price_uzs":5100000,"notes":"Viza kerak emas"},
-  {"id":3,"country_name":"Rossiya (Moskva)","price_usd":199,"price_uzs":2500000,"notes":"Viza kerak emas"},
-  {"id":4,"country_name":"Janubiy Koreya","price_usd":599,"price_uzs":7600000,"notes":"Viza talab qilinadi"},
-  {"id":5,"country_name":"Xitoy","price_usd":449,"price_uzs":5700000,"notes":"Viza talab qilinadi"},
-  {"id":6,"country_name":"Germaniya","price_usd":699,"price_uzs":8900000,"notes":"Shengen viza"},
-  {"id":7,"country_name":"Buyuk Britaniya","price_usd":749,"price_uzs":9500000,"notes":"UK viza talab qilinadi"}
+  {id:1, country_name:'Turkiya (Istanbul)', price_usd:299, price_uzs:3800000, notes:'Viza kerak emas'},
+  {id:2, country_name:'BAA (Dubai)',        price_usd:399, price_uzs:5100000, notes:'Viza kerak emas'},
+  {id:3, country_name:'Rossiya (Moskva)',   price_usd:199, price_uzs:2500000, notes:'Viza kerak emas'},
+  {id:4, country_name:'Janubiy Koreya',     price_usd:599, price_uzs:7600000, notes:'Viza talab qilinadi'},
+  {id:5, country_name:'Xitoy',             price_usd:449, price_uzs:5700000, notes:'Viza talab qilinadi'},
+  {id:6, country_name:'Germaniya',         price_usd:699, price_uzs:8900000, notes:'Shengen viza'},
+  {id:7, country_name:'Buyuk Britaniya',   price_usd:749, price_uzs:9500000, notes:'UK viza talab qilinadi'}
 ];
 
 const DEST_KEY = 'sheynaz_destinations';
@@ -20,13 +44,11 @@ function getDestinations() {
       if (Array.isArray(parsed) && parsed.length > 0) return parsed;
     }
   } catch (e) { /* ignore */ }
-  // Seed on first visit
   localStorage.setItem(DEST_KEY, JSON.stringify(SEED_DESTINATIONS));
   return SEED_DESTINATIONS;
 }
 
 // ── Language switcher ─────────────────────────────────────────────────────────
-
 function applyTranslations() {
   document.querySelectorAll('[data-i18n]').forEach(el => {
     el.textContent = t(el.dataset.i18n);
@@ -34,7 +56,6 @@ function applyTranslations() {
   document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
     el.placeholder = t(el.dataset.i18nPlaceholder);
   });
-  // Update active lang button
   const lang = getLang();
   document.querySelectorAll('.lang-switcher button').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.lang === lang);
@@ -42,9 +63,7 @@ function applyTranslations() {
 }
 
 document.querySelectorAll('.lang-switcher button').forEach(btn => {
-  btn.addEventListener('click', () => {
-    setLang(btn.dataset.lang);
-  });
+  btn.addEventListener('click', () => setLang(btn.dataset.lang));
 });
 
 document.addEventListener('langchange', () => {
@@ -52,45 +71,62 @@ document.addEventListener('langchange', () => {
   renderDestinations();
 });
 
-// Apply on load
 applyTranslations();
 
 // ── Main app ──────────────────────────────────────────────────────────────────
-
 let destinations = [];
 
 function init() {
-  // Set min date to today
   const dateInput = document.getElementById('travel_date');
   dateInput.min = new Date().toISOString().split('T')[0];
 
-  // Load destinations from localStorage
   destinations = getDestinations();
-
   renderDestinations();
+
+  const form       = document.getElementById('requestForm');
+  const successBox = document.getElementById('successBox');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = form.querySelector('button[type=submit]');
+    btn.disabled = true;
+    btn.textContent = t('btn_sending');
+
+    const data = {
+      name:  form.customer_name.value.trim(),
+      phone: form.phone.value.trim(),
+      dest:  form.destination_country.value,
+      date:  form.travel_date.value,
+    };
+
+    try {
+      await sendToTelegram(data);
+      form.style.display = 'none';
+      successBox.style.display = 'block';
+    } catch (err) {
+      alert(t('network_error') + '\n' + err.message);
+      btn.disabled = false;
+      btn.textContent = t('btn_submit');
+    }
+  });
 }
 
 function renderDestinations() {
   const select = document.getElementById('destination_country');
   const grid   = document.getElementById('destGrid');
 
-  // Rebuild the select — keep the placeholder option translated, then re-add destinations
   const currentVal = select.value;
-  // Remove all options except placeholder
   while (select.options.length > 1) select.remove(1);
-  // Update placeholder text
   select.options[0].textContent = t('placeholder_dest');
 
   if (destinations.length) {
     grid.innerHTML = '';
     destinations.forEach(d => {
-      // Populate select
       const opt = document.createElement('option');
       opt.value = d.country_name;
       opt.textContent = d.country_name;
       select.appendChild(opt);
 
-      // Populate card
       const priceLabel = d.price_usd
         ? `<div class="dest-price">$${d.price_usd} <span style="font-size:0.8rem;font-weight:400">${t('from_price')}</span></div>`
         : '';
@@ -107,7 +143,6 @@ function renderDestinations() {
       });
       grid.appendChild(card);
     });
-    // Restore selection
     select.value = currentVal;
   } else {
     grid.innerHTML = `<p style="color:#718096">${t('no_destinations')}</p>`;
