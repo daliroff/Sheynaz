@@ -1,7 +1,34 @@
-// ── Telegram Bot config ───────────────────────────────────────────────────────
-// SETUP: Paste your bot token and chat ID here (see README or instructions)
-const TG_BOT_TOKEN = 'PASTE_BOT_TOKEN_HERE';
-const TG_CHAT_ID   = 'PASTE_CHAT_ID_HERE';
+// ── JSONBin helpers ───────────────────────────────────────────────────────────
+
+async function loadRequests() {
+  const res = await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.JSONBIN_BIN_ID}/latest`, {
+    headers: { 'X-Master-Key': CONFIG.JSONBIN_KEY }
+  });
+  if (!res.ok) throw new Error('JSONBin read failed');
+  const data = await res.json();
+  return data.record.requests || [];
+}
+
+async function saveRequests(requests) {
+  // Read current bin first to preserve any other data, then update
+  const res = await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.JSONBIN_BIN_ID}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Master-Key': CONFIG.JSONBIN_KEY
+    },
+    body: JSON.stringify({ requests })
+  });
+  if (!res.ok) throw new Error('JSONBin write failed');
+}
+
+async function addRequest(entry) {
+  const requests = await loadRequests();
+  requests.unshift(entry); // newest first
+  await saveRequests(requests);
+}
+
+// ── Telegram notification ─────────────────────────────────────────────────────
 
 async function sendToTelegram(data) {
   const msg =
@@ -11,19 +38,16 @@ async function sendToTelegram(data) {
     `🌍 Yo'nalish: ${data.dest}\n` +
     `📅 Sana: ${data.date}`;
 
-  const url = `https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`;
-  const res = await fetch(url, {
+  await fetch(`https://api.telegram.org/bot${CONFIG.TG_BOT_TOKEN}/sendMessage`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ chat_id: TG_CHAT_ID, text: msg, parse_mode: 'Markdown' })
+    body: JSON.stringify({ chat_id: CONFIG.TG_CHAT_ID, text: msg, parse_mode: 'Markdown' })
   });
-  if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.description || 'Telegram error');
-  }
+  // Telegram error is non-fatal — request still gets saved to JSONBin
 }
 
-// ── Seed data ─────────────────────────────────────────────────────────────────
+// ── Seed destinations ─────────────────────────────────────────────────────────
+
 const SEED_DESTINATIONS = [
   {id:1, country_name:'Turkiya (Istanbul)', price_usd:299, price_uzs:3800000, notes:'Viza kerak emas'},
   {id:2, country_name:'BAA (Dubai)',        price_usd:399, price_uzs:5100000, notes:'Viza kerak emas'},
@@ -49,6 +73,7 @@ function getDestinations() {
 }
 
 // ── Language switcher ─────────────────────────────────────────────────────────
+
 function applyTranslations() {
   document.querySelectorAll('[data-i18n]').forEach(el => {
     el.textContent = t(el.dataset.i18n);
@@ -74,6 +99,7 @@ document.addEventListener('langchange', () => {
 applyTranslations();
 
 // ── Main app ──────────────────────────────────────────────────────────────────
+
 let destinations = [];
 
 function init() {
@@ -92,15 +118,19 @@ function init() {
     btn.disabled = true;
     btn.textContent = t('btn_sending');
 
-    const data = {
-      name:  form.customer_name.value.trim(),
-      phone: form.phone.value.trim(),
-      dest:  form.destination_country.value,
-      date:  form.travel_date.value,
+    const entry = {
+      id:         Date.now(),
+      name:       form.customer_name.value.trim(),
+      phone:      form.phone.value.trim(),
+      dest:       form.destination_country.value,
+      date:       form.travel_date.value,
+      status:     'pending',
+      created_at: new Date().toLocaleString('uz-UZ')
     };
 
     try {
-      await sendToTelegram(data);
+      await addRequest(entry);
+      sendToTelegram(entry); // fire-and-forget
       form.style.display = 'none';
       successBox.style.display = 'block';
     } catch (err) {

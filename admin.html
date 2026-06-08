@@ -46,16 +46,24 @@
     <!-- REQUESTS SECTION -->
     <div id="section-requests">
       <h1 data-i18n="requests_title">Mijozlar arizalari</h1>
-      <div class="panel" style="text-align:center; padding: 2rem;">
-        <p style="font-size:1.05rem; color:#2d1b69; margin-bottom:0.5rem;">
-          🇺🇿 Arizalar <strong>consultervisa@gmail.com</strong> manziliga yuboriladi
-        </p>
-        <p style="font-size:1.05rem; color:#2d1b69; margin-bottom:0.5rem;">
-          🇷🇺 Заявки отправляются на <strong>consultervisa@gmail.com</strong>
-        </p>
-        <p style="font-size:1.05rem; color:#2d1b69;">
-          🇬🇧 Requests are sent to <strong>consultervisa@gmail.com</strong>
-        </p>
+      <div class="table-wrap">
+        <table id="requestsTable">
+          <thead>
+            <tr>
+              <th data-i18n="th_no">№</th>
+              <th data-i18n="th_name">Ism</th>
+              <th data-i18n="th_phone">Telefon</th>
+              <th data-i18n="th_dest">Yo'nalish</th>
+              <th data-i18n="th_date">Sana</th>
+              <th data-i18n="th_submitted">Yuborilgan</th>
+              <th data-i18n="th_status">Holat</th>
+              <th data-i18n="th_action">Amal</th>
+            </tr>
+          </thead>
+          <tbody id="requestsTbody">
+            <tr><td colspan="8" style="text-align:center;color:#718096" data-i18n="loading">Yuklanmoqda...</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
@@ -115,6 +123,7 @@
   </main>
 </div>
 
+<script src="config.js"></script>
 <script src="i18n.js"></script>
 <script src="admin.js"></script>
 </body>
