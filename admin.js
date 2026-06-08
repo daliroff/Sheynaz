@@ -18,11 +18,18 @@ const SEED_DESTINATIONS = [
 
 async function jbRead() {
   const res = await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.JSONBIN_BIN_ID}/latest`, {
-    headers: { 'X-Master-Key': CONFIG.JSONBIN_KEY }
+    headers: {
+      'X-Master-Key': CONFIG.JSONBIN_KEY,
+      'X-Bin-Meta': 'false'
+    }
   });
-  if (!res.ok) throw new Error('JSONBin read error: ' + res.status);
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`JSONBin ${res.status}: ${body}`);
+  }
   const data = await res.json();
-  return data.record.requests || [];
+  const record = data.record !== undefined ? data.record : data;
+  return record.requests || [];
 }
 
 async function jbWrite(requests) {
@@ -34,7 +41,10 @@ async function jbWrite(requests) {
     },
     body: JSON.stringify({ requests })
   });
-  if (!res.ok) throw new Error('JSONBin write error: ' + res.status);
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`JSONBin save ${res.status}: ${body}`);
+  }
 }
 
 // ── localStorage helpers (destinations only) ──────────────────────────────────

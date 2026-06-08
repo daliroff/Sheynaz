@@ -2,15 +2,22 @@
 
 async function loadRequests() {
   const res = await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.JSONBIN_BIN_ID}/latest`, {
-    headers: { 'X-Master-Key': CONFIG.JSONBIN_KEY }
+    headers: {
+      'X-Master-Key': CONFIG.JSONBIN_KEY,
+      'X-Bin-Meta': 'false'
+    }
   });
-  if (!res.ok) throw new Error('JSONBin read failed');
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`JSONBin ${res.status}: ${body}`);
+  }
   const data = await res.json();
-  return data.record.requests || [];
+  // v3 wraps in {record:...}, but public bins may return directly
+  const record = data.record !== undefined ? data.record : data;
+  return record.requests || [];
 }
 
 async function saveRequests(requests) {
-  // Read current bin first to preserve any other data, then update
   const res = await fetch(`https://api.jsonbin.io/v3/b/${CONFIG.JSONBIN_BIN_ID}`, {
     method: 'PUT',
     headers: {
@@ -19,12 +26,15 @@ async function saveRequests(requests) {
     },
     body: JSON.stringify({ requests })
   });
-  if (!res.ok) throw new Error('JSONBin write failed');
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`JSONBin save ${res.status}: ${body}`);
+  }
 }
 
 async function addRequest(entry) {
   const requests = await loadRequests();
-  requests.unshift(entry); // newest first
+  requests.unshift(entry);
   await saveRequests(requests);
 }
 
