@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uz">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,17 +8,24 @@
 </head>
 <body>
 
+<!-- LANG SWITCHER (always visible, top-right) -->
+<div class="lang-switcher lang-switcher-fixed">
+  <button data-lang="uz">UZ</button>
+  <button data-lang="ru">RU</button>
+  <button data-lang="en">EN</button>
+</div>
+
 <!-- LOGIN SCREEN -->
 <div class="login-wrap" id="loginScreen">
   <div class="login-card">
-    <h2>Sheynaz <span style="color:#48cae4">Travel</span></h2>
-    <p>Admin Panel — Please log in</p>
+    <h2>Sheynaz <span>Travel</span></h2>
+    <p data-i18n="login_sub">Iltimos, tizimga kiring</p>
     <div class="form-group">
-      <label for="adminPass">Password</label>
-      <input type="password" id="adminPass" placeholder="Enter password" />
+      <label for="adminPass" data-i18n="label_password">Parol</label>
+      <input type="password" id="adminPass" data-i18n-placeholder="placeholder_password" placeholder="Parolni kiriting" />
     </div>
-    <button class="btn btn-primary btn-full" id="loginBtn">Log In</button>
-    <p class="error-msg" id="loginError">Incorrect password. Try again.</p>
+    <button class="btn btn-primary btn-full" id="loginBtn" data-i18n="btn_login">Kirish</button>
+    <p class="error-msg" id="loginError" data-i18n="login_error">Noto'g'ri parol. Qayta urinib ko'ring.</p>
   </div>
 </div>
 
@@ -27,34 +34,34 @@
   <aside class="sidebar">
     <div class="brand">Sheynaz <span>Admin</span></div>
     <nav>
-      <a href="#" class="active" data-section="requests">Customer Requests</a>
-      <a href="#" data-section="destinations">Destinations & Prices</a>
+      <a href="#" class="active" data-section="requests" data-i18n="menu_requests">Mijozlar arizalari</a>
+      <a href="#" data-section="destinations" data-i18n="menu_destinations">Yo'nalishlar va narxlar</a>
     </nav>
     <div style="padding:1.5rem 1.2rem; margin-top:auto;">
-      <button class="btn btn-danger btn-sm" id="logoutBtn" style="width:100%">Log Out</button>
+      <button class="btn btn-danger btn-sm" id="logoutBtn" style="width:100%" data-i18n="btn_logout">Chiqish</button>
     </div>
   </aside>
 
   <main class="main-content">
     <!-- REQUESTS SECTION -->
     <div id="section-requests">
-      <h1>Customer Requests</h1>
+      <h1 data-i18n="requests_title">Mijozlar arizalari</h1>
       <div class="table-wrap">
         <table id="requestsTable">
           <thead>
             <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Phone</th>
-              <th>Destination</th>
-              <th>Travel Date</th>
-              <th>Status</th>
-              <th>Submitted</th>
-              <th>Action</th>
+              <th data-i18n="th_no">№</th>
+              <th data-i18n="th_name">Ism</th>
+              <th data-i18n="th_phone">Telefon</th>
+              <th data-i18n="th_dest">Yo'nalish</th>
+              <th data-i18n="th_date">Sana</th>
+              <th data-i18n="th_status">Holat</th>
+              <th data-i18n="th_submitted">Yuborilgan</th>
+              <th data-i18n="th_action">Amal</th>
             </tr>
           </thead>
           <tbody id="requestsTbody">
-            <tr><td colspan="8" style="text-align:center;color:#718096">Loading...</td></tr>
+            <tr><td colspan="8" style="text-align:center;color:#718096" data-i18n="loading">Yuklanmoqda...</td></tr>
           </tbody>
         </table>
       </div>
@@ -62,35 +69,35 @@
 
     <!-- DESTINATIONS SECTION -->
     <div id="section-destinations" style="display:none">
-      <h1>Destinations &amp; Prices</h1>
+      <h1 data-i18n="dest_title">Yo'nalishlar va narxlar</h1>
 
       <div class="panel">
-        <h3 id="destFormTitle">Add New Destination</h3>
+        <h3 id="destFormTitle" data-i18n="add_dest_title">Yangi yo'nalish qo'shish</h3>
         <form id="destForm">
           <input type="hidden" id="editId" />
           <div class="form-row">
             <div class="form-group">
-              <label>Country / Destination</label>
-              <input type="text" id="f_country" placeholder="e.g. Turkey (Istanbul)" required />
+              <label data-i18n="label_country">Mamlakat / Yo'nalish</label>
+              <input type="text" id="f_country" data-i18n-placeholder="placeholder_country" placeholder="masalan: Turkiya (Istanbul)" required />
             </div>
             <div class="form-group">
-              <label>Price (USD)</label>
+              <label data-i18n="label_price_usd">Narx (USD)</label>
               <input type="number" id="f_usd" placeholder="e.g. 199" min="0" />
             </div>
             <div class="form-group">
-              <label>Price (UZS)</label>
+              <label data-i18n="label_price_uzs">Narx (UZS)</label>
               <input type="number" id="f_uzs" placeholder="e.g. 2500000" min="0" />
             </div>
           </div>
           <div class="form-row">
             <div class="form-group form-full">
-              <label>Notes</label>
-              <input type="text" id="f_notes" placeholder="Visa info, travel tips..." />
+              <label data-i18n="label_notes">Izohlar</label>
+              <input type="text" id="f_notes" data-i18n-placeholder="placeholder_notes" placeholder="Viza ma'lumotlari, maslahatlar..." />
             </div>
           </div>
           <div style="display:flex;gap:0.75rem;margin-top:0.5rem">
-            <button type="submit" class="btn btn-primary" id="destSubmitBtn">Add Destination</button>
-            <button type="button" class="btn" id="destCancelBtn" style="display:none;background:#e2e8f0">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="destSubmitBtn" data-i18n="btn_add_dest">Yo'nalish qo'shish</button>
+            <button type="button" class="btn" id="destCancelBtn" style="display:none;background:#e2e8f0" data-i18n="btn_cancel">Bekor qilish</button>
           </div>
         </form>
       </div>
@@ -98,10 +105,17 @@
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>#</th><th>Destination</th><th>Price USD</th><th>Price UZS</th><th>Notes</th><th>Actions</th></tr>
+            <tr>
+              <th data-i18n="th_no">№</th>
+              <th data-i18n="th_dest_name">Yo'nalish</th>
+              <th data-i18n="th_price_usd">Narx USD</th>
+              <th data-i18n="th_price_uzs">Narx UZS</th>
+              <th data-i18n="th_notes">Izohlar</th>
+              <th data-i18n="th_actions">Amallar</th>
+            </tr>
           </thead>
           <tbody id="destTbody">
-            <tr><td colspan="6" style="text-align:center;color:#718096">Loading...</td></tr>
+            <tr><td colspan="6" style="text-align:center;color:#718096" data-i18n="loading">Yuklanmoqda...</td></tr>
           </tbody>
         </table>
       </div>
@@ -109,6 +123,7 @@
   </main>
 </div>
 
+<script src="i18n.js"></script>
 <script src="admin.js"></script>
 </body>
 </html>
