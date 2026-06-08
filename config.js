@@ -14,6 +14,6 @@ const CONFIG = {
   //    jsonbin.io > Register > API Keys > Create Access Key (Master Key)
   //    Keyin: Bins > Create New Bin > body: {"requests":[]} > Save > ID ni nusxalang
   JSONBIN_KEY:    '$2a$10$eoAkV.oNDilFSzZoBo1eGOi7IvhOSaFci3PABKfrtG9e.UGFLDtvK',
-  JSONBIN_BIN_ID: 'PASTE_JSONBIN_BIN_ID_HERE',
+  JSONBIN_BIN_ID: '6a26f231da38895dfe9b003a',
 
 };
