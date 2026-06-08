@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sheynaz Travel — Flights from Uzbekistan</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<nav>
+  <div class="logo">Sheynaz <span>Travel</span></div>
+  <a href="/admin">Admin</a>
+</nav>
+
+<div class="hero">
+  <h1>Fly Anywhere from Uzbekistan</h1>
+  <p>We find the best flight prices for you — Turkey, Dubai, Europe and beyond</p>
+</div>
+
+<div class="search-card">
+  <h2>Request a Flight Price</h2>
+  <form id="requestForm">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="customer_name">Your Name</label>
+        <input type="text" id="customer_name" name="customer_name" placeholder="Full name" required />
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" placeholder="+998 XX XXX XX XX" required />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="destination_country">Destination</label>
+        <select id="destination_country" name="destination_country" required>
+          <option value="">-- Choose country --</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="travel_date">Travel Date</label>
+        <input type="date" id="travel_date" name="travel_date" required />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group form-full">
+        <button type="submit" class="btn btn-primary btn-full">Request Price</button>
+      </div>
+    </div>
+  </form>
+
+  <div class="success-box" id="successBox">
+    <h3>Thank you! Your request has been received.</h3>
+    <p>We will call or text you shortly with the price and all the details. Stay tuned!</p>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Popular Destinations</h2>
+  <div class="destinations-grid" id="destGrid">
+    <p style="color:#718096">Loading destinations...</p>
+  </div>
+</div>
+
+<footer>
+  &copy; 2024 Sheynaz Travel, Tashkent, Uzbekistan &nbsp;|&nbsp; +998 XX XXX XX XX
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

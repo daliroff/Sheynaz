@@ -1,0 +1,214 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f0f4f8;
+  color: #1a202c;
+}
+
+/* ── Nav ── */
+nav {
+  background: #0a3d62;
+  color: #fff;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+nav .logo { font-size: 1.4rem; font-weight: 700; letter-spacing: 0.5px; }
+nav .logo span { color: #48cae4; }
+nav a { color: #cce; text-decoration: none; font-size: 0.9rem; }
+nav a:hover { color: #fff; }
+
+/* ── Hero ── */
+.hero {
+  background: linear-gradient(135deg, #0a3d62 0%, #1e6091 60%, #48cae4 100%);
+  color: #fff;
+  text-align: center;
+  padding: 5rem 1rem 6rem;
+}
+.hero h1 { font-size: 2.4rem; margin-bottom: 0.8rem; }
+.hero p  { font-size: 1.1rem; opacity: 0.88; margin-bottom: 2.5rem; }
+
+/* ── Search card ── */
+.search-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  max-width: 680px;
+  margin: -3rem auto 0;
+  padding: 2rem;
+  position: relative;
+  z-index: 10;
+}
+.search-card h2 { text-align: center; margin-bottom: 1.5rem; color: #0a3d62; font-size: 1.2rem; }
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+@media (max-width: 540px) { .form-row { grid-template-columns: 1fr; } }
+
+.form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+.form-group label { font-size: 0.85rem; font-weight: 600; color: #4a5568; }
+.form-group input,
+.form-group select,
+.form-group textarea {
+  border: 1.5px solid #cbd5e0;
+  border-radius: 8px;
+  padding: 0.6rem 0.85rem;
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+  outline: none;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus { border-color: #48cae4; }
+
+.form-full { grid-column: 1 / -1; }
+
+.btn {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+.btn:active { transform: scale(0.97); }
+.btn-primary { background: #0a3d62; color: #fff; }
+.btn-primary:hover { background: #1e6091; }
+.btn-danger  { background: #e53e3e; color: #fff; }
+.btn-danger:hover { background: #c53030; }
+.btn-sm { padding: 0.4rem 1rem; font-size: 0.85rem; }
+.btn-full { width: 100%; }
+.btn-success { background: #38a169; color: #fff; }
+.btn-success:hover { background: #2f855a; }
+
+/* ── Success message ── */
+.success-box {
+  display: none;
+  background: #c6f6d5;
+  border: 1.5px solid #38a169;
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  margin-top: 1rem;
+}
+.success-box h3 { color: #276749; margin-bottom: 0.5rem; }
+.success-box p  { color: #276749; font-size: 0.95rem; }
+
+/* ── Destinations grid ── */
+.section { max-width: 900px; margin: 3rem auto; padding: 0 1rem; }
+.section h2 { font-size: 1.5rem; color: #0a3d62; margin-bottom: 1.5rem; }
+
+.destinations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+.dest-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  border-top: 4px solid #48cae4;
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.dest-card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.13); transform: translateY(-2px); }
+.dest-card .dest-name { font-weight: 700; color: #0a3d62; margin-bottom: 0.4rem; }
+.dest-card .dest-price { color: #38a169; font-size: 1.1rem; font-weight: 600; }
+.dest-card .dest-notes { font-size: 0.8rem; color: #718096; margin-top: 0.4rem; }
+
+/* ── Admin ── */
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+}
+.sidebar {
+  width: 220px;
+  background: #0a3d62;
+  color: #fff;
+  padding: 1.5rem 0;
+  flex-shrink: 0;
+}
+.sidebar .brand { padding: 0 1.2rem 1.5rem; font-size: 1.1rem; font-weight: 700; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.sidebar .brand span { color: #48cae4; }
+.sidebar nav a {
+  display: block;
+  padding: 0.75rem 1.5rem;
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: background 0.15s, color 0.15s;
+}
+.sidebar nav a:hover, .sidebar nav a.active { background: rgba(255,255,255,0.1); color: #fff; }
+.sidebar .logout { margin-top: auto; padding: 1.5rem; }
+
+.main-content { flex: 1; padding: 2rem; overflow-y: auto; }
+.main-content h1 { font-size: 1.6rem; color: #0a3d62; margin-bottom: 1.5rem; }
+
+/* Login page */
+.login-wrap {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0a3d62, #48cae4);
+}
+.login-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2.5rem;
+  width: 340px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+  text-align: center;
+}
+.login-card h2 { color: #0a3d62; margin-bottom: 0.4rem; }
+.login-card p  { color: #718096; margin-bottom: 1.5rem; font-size: 0.9rem; }
+.login-card .form-group { text-align: left; margin-bottom: 1rem; }
+.error-msg { color: #e53e3e; font-size: 0.85rem; margin-top: 0.5rem; display: none; }
+
+/* Tables */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+th { background: #0a3d62; color: #fff; padding: 0.75rem 1rem; text-align: left; font-size: 0.85rem; }
+td { padding: 0.7rem 1rem; border-bottom: 1px solid #e2e8f0; font-size: 0.9rem; }
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: #f7fafc; }
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+.badge-pending   { background: #fefcbf; color: #744210; }
+.badge-contacted { background: #c6f6d5; color: #276749; }
+
+/* Admin form panel */
+.panel {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  margin-bottom: 2rem;
+}
+.panel h3 { font-size: 1rem; color: #0a3d62; margin-bottom: 1rem; }
+.panel .form-row { grid-template-columns: 1fr 1fr 1fr; }
+@media (max-width: 700px) { .panel .form-row { grid-template-columns: 1fr; } .admin-layout { flex-direction: column; } .sidebar { width: 100%; } }
+
+.actions { display: flex; gap: 0.5rem; }
+
+footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: #718096;
+  font-size: 0.85rem;
+}
